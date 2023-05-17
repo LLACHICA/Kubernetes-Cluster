@@ -100,6 +100,16 @@ Create the certificate signing request configuration file
  ]
 }
 ```
+```
+Generate the certificate and private key.
+# cfssl gencert \
+-ca=ca.pem \
+-ca-key=ca-key.pem \
+-config=ca-config.json \
+-hostname=192.168.126.100,192.168.126.101,192.168.126.102,192.168.126.103,127.0.0.1,kubernetes.default \
+-profile=kubernetes kubernetes-csr.json | \
+cfssljson -bare kubernetes
+```
 Copy the certificate to each nodes
 ```
 # scp ca.pem kubernetes.pem kubernetes-key.pem kadmin@k8s-master-a:~
