@@ -125,17 +125,22 @@ Installing HAProxy Load Balancer
 # apt update && apt install -y keepalived haproxy
 ===
 # cat >> /etc/keepalived/check_apiserver.sh <<EOF
-#!/bin/sh
+#!/bin/bash
 
-errorExit() {
-  echo "*** $*" 1>&2
-  exit 1
-}
+# Check if localhost is running on port 6443
+nc -z -w 1 127.0.0.1 6443 >/dev/null
 
-curl --silent --max-time 2 --insecure https://localhost:6443/ -o /dev/null || errorExit "Error GET https://localhost:6443/"
-if ip addr | grep -q 192.168.126.100; then
-  curl --silent --max-time 2 --insecure https://192.168.126.100:6443/ -o /dev/null || errorExit "Error GET https://192.168.126.100:6443/"
+# Capture the exit code
+exit_code=$?
+
+# Exit with appropriate status
+if [ $exit_code -eq 0 ]; then
+  exit 0  # Localhost is running on port 6443, return success
+else
+  exit 1  # Localhost is not running on port 6443, return failure
 fi
+~
+
 
 EOF
 
@@ -144,7 +149,11 @@ chmod +x /etc/keepalived/check_apiserver.sh
 ===
 # cat >> /etc/keepalived/keepalived.conf <<EOF
 global_defs {
-        script_user keepalived_script
+#       script_user keepalived_script
+        enable_script_security
+        script_user root
+        dynamic_interfaces
+
 }
 vrrp_script chk_apiserver {
     script "/etc/keepalived/check_apiserver.sh"
@@ -160,15 +169,16 @@ vrrp_instance VI_1 {
     advert_int 1
     authentication {
         auth_type PASS
-        auth_pass passwd123
+        auth_pass g3nius
     }
     virtual_ipaddress {
-        192.168.126.100
+        192.168.126.100 dev ens38
     }
     track_script {
         chk_apiserver
     }
 }
+
 
 EOF
 # systemctl enable --now keepalived
