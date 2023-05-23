@@ -447,3 +447,18 @@ kube-scheduler-k8s-master-b                1/1     Running   26 (3d4h ago)   20d
 kube-scheduler-k8s-master-c                1/1     Running   19 (3d4h ago)   20d     192.168.126.103   k8s-master-c   <none>           <none>
 
 ```
+
+```
+Here is how to download the Linux binaries for kubectx and kubens utility:
+
+wget https://github.com/ahmetb/kubectx/releases/download/v0.9.0/kubectx_v0.9.0_linux_x86_64.tar.gz
+wget https://github.com/ahmetb/kubectx/releases/download/v0.9.0/kubens_v0.9.0_linux_x86_64.tar.gz
+Then you extract them with the following commands:
+
+tar -xvf kubectx_v0.9.0_linux_x86_64.tar.gz
+tar -xvf kubens_v0.9.0_linux_x86_64.tar.gz
+Finally, you move them to your PATH:
+
+sudo mv kubectx /usr/local/bin
+sudo mv kubens /usr/local/bin
+```
