@@ -204,7 +204,7 @@ Configure haproxy
 
 # systemctl enable haproxy && systemctl restart haproxy
 ```
-Preparing the nodes for kubeadm
+# Preparing the nodes for kubeadm
 
 Initial Setup for all master and node machines
 Copy the commands below and paste them into a setup.sh file and then execute it with . setup.sh
