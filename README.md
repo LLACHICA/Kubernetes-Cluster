@@ -325,6 +325,7 @@ apiServer:
     apiserver-count: "3"
 ```
 ```# sudo kubeadm init --config=config.yaml```
+Proxmox/LXC error /lib/modules fix "pct push $VMID /boot/config-$(uname -r) /boot/config-$(uname -r)"
 
 Copy the certificates to the two other masters
 ```
