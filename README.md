@@ -417,12 +417,18 @@ scheduler            Healthy   ok
 controller-manager   Healthy   ok
 etcd-0               Healthy   {"health":"true"}
 etcd-2               Healthy   {"health":"true"}
-etcd-1               Healthy   {"health":"true"}
+etc-1               Healthy   {"health":"true"}
+```
 
-
-Deploying the overlay network
+# Deploying the overlay network
+```
 Deploy Calico network
-kubectl --kubeconfig=/etc/kubernetes/admin.conf create -f https://docs.projectcalico.org/v3.18/manifests/calico.yaml
+Link: https://docs.tigera.io/calico/latest/getting-started/kubernetes/self-managed-onprem/onpremises
+
+# kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.26.1/manifests/tigera-operator.yaml
+# curl https://raw.githubusercontent.com/projectcalico/calico/v3.26.1/manifests/custom-resources.yaml -O
+# kubectl create -f custom-resources.yaml 
+```
 
 root@haproxy-lb1:~# kubectl get pods -n kube-system -o wide
 NAME                                       READY   STATUS    RESTARTS        AGE     IP                NODE           NOMINATED NODE   READINESS GATES
