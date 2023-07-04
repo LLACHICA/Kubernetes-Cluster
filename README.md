@@ -258,7 +258,8 @@ Installing and configuring Etcd on all 3 Master Nodes
 # tar xvzf etcd-v3.4.13-linux-amd64.tar.gz
 # sudo mv etcd-v3.4.13-linux-amd64/etcd* /usr/local/bin/
 ```
-Create an etcd systemd unit file
+Create an etcd systemd unit file 
+# update value base on your host IP adderess/nodename except for line "--initial-cluster"
 ```
 # vi /etc/systemd/system/etcd.service
 [Unit]
