@@ -1,6 +1,6 @@
 Install Dashboard
 
-https://github.com/LLACHICA/Kubernetes-Cluster.git
+
 ceph mgr module enable dashboard
 ceph dashboard create-self-signed-cert
 
