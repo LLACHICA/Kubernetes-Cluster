@@ -429,7 +429,7 @@ Link: https://docs.tigera.io/calico/latest/getting-started/kubernetes/self-manag
 # curl https://raw.githubusercontent.com/projectcalico/calico/v3.26.1/manifests/custom-resources.yaml -O
 # kubectl create -f custom-resources.yaml 
 ```
-
+```
 root@haproxy-lb1:~# kubectl get pods -n kube-system -o wide
 NAME                                       READY   STATUS    RESTARTS        AGE     IP                NODE           NOMINATED NODE   READINESS GATES
 calico-kube-controllers-674fff74c8-skfhj   1/1     Running   1 (3d4h ago)    5d22h   192.168.218.133   k8s-master-c   <none>           <none>
