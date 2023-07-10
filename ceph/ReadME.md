@@ -11,7 +11,7 @@ ceph dashboard ac-user-create <name> -i password.txt adminstrator
 ceph mgr module disable dashboard
 ceph mgr module enable dashboard
 
-### clean up
+### clean up ceph
 
 ```
 rm -rf /etc/systemd/system/ceph*
@@ -27,4 +27,14 @@ dpkg-reconfigure ceph-common
 dpkg-reconfigure ceph-fuse
 for i in $(apt search ceph | grep installed | awk -F/ '{print $1}'); do apt reinstall $i; done
 pveceph install
+```
+
+### remove ceph
+```
+systemctl stop pve-cluster corosync
+pmxcfs -l
+rm /etc/corosync/*
+rm /etc/pve/corosync.conf
+killall pmxcfs
+systemctl start pve-cluster
 ```
