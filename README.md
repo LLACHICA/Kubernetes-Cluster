@@ -325,9 +325,12 @@ apiServer:
     apiserver-count: "3"
 ```
 ```# sudo kubeadm init --config=config.yaml```
-Proxmox/LXC error /lib/modules fix "pct push $VMID /boot/config-$(uname -r) /boot/config-$(uname -r)"
-https://kevingoos.medium.com/kubernetes-inside-proxmox-lxc-cce5c9927942
 
+```
+Proxmox/LXC error /lib/modules fix
+pct push 104 /boot/config-$(uname -r) /boot/config-$(uname -r)
+https://kevingoos.medium.com/kubernetes-inside-proxmox-lxc-cce5c9927942
+```
 Copy the certificates to the two other masters
 ```
 # sudo scp -r /etc/kubernetes/pki kadmin@k8s-master-b:~
