@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: plex-pv-data
+  namespace: plex
+spec:
+  storageClassName: ""
+  capacity:
+    storage: 1Ti                   # < max. size we reserve for the pv. A bigger value than the configdata
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  nfs:
+    path: /mnt/NAS-raidz
+    server: 192.168.2.205
+    readOnly: false
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: plex-pvc-data
+  namespace: plex
+spec:
+  storageClassName: ""
+  volumeName: plex-pv-data
+  accessModes:
+    - ReadWriteMany
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 1T

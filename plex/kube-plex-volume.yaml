@@ -1,0 +1,99 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: kube-plex-data
+  namespace: plex
+spec:
+  storageClassName: ""
+  capacity:
+    storage: 500Gi                   # < max. size we reserve for the pv. A bigger value than the configdata
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  nfs:
+    path: /mnt/NAS-raidz/Movie
+    server: 192.168.2.205
+    readOnly: false
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: kube-plex-trans
+  namespace: plex
+spec:
+  storageClassName: ""
+  capacity:
+    storage: 20Gi                   # < max. size we reserve for the pv. A bigger value than the configdata
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  nfs:
+    path: /mnt/NAS-raidz/kube-plex/transcode
+    server: 192.168.2.205
+    readOnly: false
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: kube-plex-config
+  namespace: plex
+spec:
+  storageClassName: ""
+  capacity:
+    storage: 20Gi                   # < max. size we reserve for the pv. A bigger value than the configdata
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  nfs:
+    path: /mnt/NAS-raidz/kube-plex/config
+    server: 192.168.2.205
+    readOnly: false
+
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-data
+  namespace: plex
+spec:
+  storageClassName: ""
+  volumeName: kube-plex-data
+  accessModes:
+    - ReadWriteMany
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 100Gi
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-trans
+  namespace: plex
+spec:
+  storageClassName: ""
+  volumeName: kube-plex-trans
+  accessModes:
+    - ReadWriteMany
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 20Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-config
+  namespace: plex
+spec:
+  storageClassName: ""
+  volumeName: kube-plex-config
+  accessModes:
+    - ReadWriteMany
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 20Gi
+

@@ -1,0 +1,42 @@
+---
+- name: Drain and shutdown Kubernetes cluster nodes
+  hosts: haproxy-01
+  become: true
+  gather_facts: false
+
+  tasks:
+#    - name: Drain worker nodes
+#      shell: kubectl drain {{ item }} --ignore-daemonsets --force --grace-period=0 --delete-local-data
+#      with_items:
+#        - worker-01
+#        - worker-02
+
+#    - name: Shutdown worker nodes
+#      shell: shutdown -h now
+#      delegate_to: "{{ item }}"
+#      with_items:
+#        - worker-01
+#        - worker-02
+#      tags:
+#        - reboot_worker
+
+    - name: Drain master nodes
+      shell: kubectl drain {{ item }} --ignore-daemonsets  --force --grace-period=0
+      with_items:
+        - k8s-master-01
+        - k8s-master-02
+        - k8s-master-03
+      tags:
+        drain_master
+
+    - name: Shutdown master nodes
+      shell: shutdown -h now
+      delegate_to: "{{ item }}"
+      with_items:
+        - k8s-master-01
+        - k8s-master-02
+        - k8s-master-03
+      tags:
+        - shutdown_master
+
+

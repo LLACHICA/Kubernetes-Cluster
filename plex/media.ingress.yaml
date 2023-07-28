@@ -1,0 +1,46 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: "plex"
+  name: "media-ingress"
+spec:
+  rules:
+  - host: "192.168.2.151.nip.io"
+    http:
+      paths:
+        - path: "/transmission"
+          pathType: Prefix
+          backend:
+            service:
+              name: "transmission-transmission-openvpn"
+              port:
+                number: 80
+        - path: "/sonarr"
+          pathType: Prefix
+          backend:
+            service:
+              name: "sonarr"
+              port:
+                number: 80
+        - path: "/jackett"
+          pathType: Prefix
+          backend:
+            service:
+              name: "jackett"
+              port:
+                number: 80
+        - path: "/radarr"
+          pathType: Prefix
+          backend:
+            service:
+              name: "radarr"
+              port:
+                number: 80
+        - path: "/"
+          pathType: Prefix
+          backend:
+            service:
+              name: "plex-kube-plex"
+              port:
+                number: 32400
+

@@ -1,0 +1,30 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: plex-tcp
+  namespace: plex
+  annotations:
+    metallb.universe.tf/allow-shared-ip: plexserver
+spec:
+  selector:
+    app: plexserver
+  ports:
+    - port: 32400
+      targetPort: 32400
+      name: pms-web
+      protocol: TCP
+    - port: 3005
+      targetPort: 3005
+      name: plex-companion
+    - port: 8324
+      name: plex-roku
+      targetPort: 8324
+      protocol: TCP
+    - port: 32469
+      targetPort: 32469
+      name: dlna-tcp
+      protocol: TCP
+  type: LoadBalancer
+#  loadBalancerIP: 192.168.2.53
+
+

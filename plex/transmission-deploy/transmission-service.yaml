@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: transmission-transmission-openvpn
+  namespace: plex
+spec:
+  type: LoadBalancer
+  selector:
+    app: transmission-openvpn   
+  ports:
+    - name: http
+      protocol: TCP
+      port: 9091
+      targetPort: 9091  
+

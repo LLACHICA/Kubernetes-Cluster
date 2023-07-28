@@ -1,0 +1,87 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: transmission-transmission-openvpn
+  namespace: plex
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: transmission-openvpn
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: transmission-openvpn
+    spec:
+#      dnsConfig:
+#        nameservers:
+#          - 8.8.8.8
+#          - 8.8.4.4
+
+      containers:
+        - name: transmission
+          image: haugene/transmission-openvpn
+          imagePullPolicy: Always
+          env:
+            - name: OPENVPN_PROVIDER
+              value: CUSTOM
+            - name: OPENVPN_USERNAME
+              value: $userbame
+            - name: OPENVPN_PASSWORD
+              value: $passwd
+            - name: TRANSMISSION_RPC_USERNAME
+              value: USERNAME
+            - name: TRANSMISSION_RPC_PASSWORD
+              value: PASSWD
+            - name: TRANSMISSION_PEER_PORT
+              value: '47444'
+            - name: LOCAL_NETWORK
+              value: "192.168.2.0/24"
+            - name: TRANSMISSION_RPC_AUTHENTICATION_REQUIRED
+              value: 'true'
+            - name: TRANSMISSION_DOWNLOAD_DIR
+              value: /downloads/transmission
+            - name: PUID
+              value: '1000'
+            - name: PGID
+              value: '1000'
+          securityContext:
+            allowPrivilegeEscalation: true
+            capabilities:
+              add:
+                - NET_ADMIN
+            privileged: true
+
+          volumeMounts:
+            - name: myvolume
+              mountPath: "/etc/openvpn/custom"
+              subPath: "ovpn"
+            - name: myvolume
+              mountPath: /data
+              subPath: configs/transmission-data
+            - name: myvolume
+              mountPath: /downloads/transmission
+              subPath: downloads/transmission
+            - mountPath: /etc/localtime
+              name: localtime
+              readOnly: true
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+
+
+      volumes:
+        - name: myvolume
+          persistentVolumeClaim:
+            claimName: plex-pvc-data
+        - hostPath:
+            path: /dev/net/tun
+            type: ''
+          name: tunnel
+        - hostPath:
+            path: /etc/localtime
+            type: ''
+          name: localtime
+
